@@ -1,0 +1,131 @@
+.custom-body {
+    background-color: #198754;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.custom-login-container {
+    background-color: white;
+    color: #198754;
+    font-weight: 700;
+    padding: 22px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.custom-div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.custom-forgot-password {
+    font-weight: 400;
+    font-size: 12px;
+    text-align: right;
+}
+
+.custom-forgot-password:hover{
+    font-weight: 500;
+}
+
+.form-group {
+    margin-bottom: 12px;
+}
+
+.custom-input {
+    padding: 12px 20px;
+    border-radius: 18px;
+    border-color: black;
+    outline: 0;
+    border-width: 1.2px;
+    font-size: 12px;
+    width: 280px;
+}
+
+.custom-login-title{
+    font-size: 22px;
+    margin-bottom: 35px;
+    text-align: center;
+}
+
+
+.form-control {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #198754;
+    border-radius: 4px;
+    outline: none;
+}
+
+.btn-primary {
+    background-color: #198754;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn-primary:hover {
+    background-color: #156d43;
+}
+
+.m-3 {
+    margin: 15px;
+}
+.custom-wrapper{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+.custom-signin {
+    color: #198754;
+    text-decoration: none;
+    font-weight: 400;
+    font-size: 14px;
+    align-self: center;
+}
+
+.custom-signin:hover{
+    font-weight: 500;
+}
+
+.signin:hover{
+    color:black
+}
+
+.second-buttons{
+    display:flex;
+    flex-direction: column;
+}
+
+.custom-login {
+    width: 100%;
+    padding: 11px 0px;
+    border-radius: 18px;
+    color: white;
+    margin: 12px 0px;
+}
+
+.custom-login:hover{
+    background-color: #156d43;
+}
+
+.password-img{
+    cursor: pointer;
+    height: 19px;
+    width: 19px;
+    position: absolute;
+    margin: auto 18px;
+}
+
+.password-div{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}

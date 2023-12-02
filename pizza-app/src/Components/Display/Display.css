@@ -1,0 +1,176 @@
+.home-screen{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.image-container {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .image-wrapper {
+    display: flex;
+    position: relative;
+  }
+  
+  .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0), rgba(0, 0, 0, 0)),
+    linear-gradient(to left, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.9)),
+    linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3));
+}
+             
+  
+  
+  .home-pizza{
+    filter: contrast(1);
+    width:100%;
+    margin: 0;
+    height: auto;
+    top: 0;
+    left: 0;
+    }
+
+  .text-on-right {
+    position: absolute;
+    top: 32%;
+    padding: 20px;
+    color:white;
+    max-width: 600px;
+    margin-left: 70px;
+  }
+  
+  .text-on-right h1{
+    margin-bottom: 20px;
+    line-height: 3.5rem;
+  }
+  
+  .menu-section{
+    padding: 100px;
+  }
+
+  .custom-overlay{
+   
+    background-color: rgba(0, 0, 0, 0.6); 
+    display: flex;
+    flex-direction: column;
+  }
+
+  .custom{
+    font-size: 14px;
+  }
+  select .custom{
+    background-color: gainsboro;
+    color: black;
+  }
+
+
+.pizza-name{
+  font-size:25px;
+  margin:0;
+}
+
+.custom-button{
+ outline: none;
+ border: none;
+ font-size:14px;
+ font-weight: 600;
+ background-color: #198754;
+ padding: 0px 12px;
+}
+
+.custom-button-stock{
+  outline: none;
+  border: none;
+  font-size:14px;
+  font-weight: 600;
+  background-color: #198754;
+  padding: 7px 12px;
+}
+
+
+.custom-button:active, .custom-button-stock:active{
+  background-color: #085125;
+}
+
+.category{
+  flex: 1;
+}
+
+.price{
+  margin:0;
+}
+
+span{
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.custom-pizza-div{
+  display:flex;
+  flex-direction: row;
+  width:100%;
+  padding: 42px 0px 0px 50px;
+  align-items: center;
+  background-color: #198754;
+  margin-bottom: 50px;
+
+}
+
+.custom-pizza-image{
+  height: 380px;
+  width: 480px;
+  padding: 0;
+  margin: 0;
+}
+
+
+.new-feature{
+  margin:0px  30px;
+  font-size: 15px;
+  color:white;
+  font-weight: 500;
+}
+
+.left-part{
+  margin: 30px;
+  font-size: 30px;
+  color:white;
+  font-weight: 600;
+  align-self: center;
+}
+
+
+.custom-pizza-text{
+  display:flex;
+  flex-direction: column;
+}
+
+.custom-pizza-text button{
+  padding: 12px 28px;
+  margin: 18px 30px;
+  font-size: 22px;
+  border-radius: 5px;
+  color: #198754;
+  background-color: white;
+  border: 0;
+  font-weight: 700;
+  transition: all 0.3s;
+  cursor: pointer;
+  align-self: center;
+  display: inline;
+}
+
+.link{
+  text-decoration: none;
+  color: inherit;
+}
+
+.custom-pizza-text button:hover{
+  transform: scale(1.1);
+}

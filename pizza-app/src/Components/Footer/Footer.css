@@ -1,0 +1,129 @@
+.footer-container {
+    background-color: white;
+    color: #198754;
+    padding: 40px 0px 20px 0px;
+    display:flex;
+  }
+  
+  .footer-content {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin: 20px 30px;
+    font-size: 12px;
+  }
+  
+  .footer-logo h2 {
+    margin: 0;
+    padding: 0;
+  }
+
+  .footer-links{
+    list-style: none;
+    display: flex;
+    flex:1;
+  }
+  
+.footer-columns{
+    display: flex;
+    flex-direction: column;
+    margin: 0px 40px 0px 0px;
+}
+
+
+.column-title{
+    font-weight: 600;
+}
+  .footer-links a {
+    text-decoration: none;
+    color: #198754;
+    transition: color 0.3s ease-in-out;
+  }
+  
+  .footer-links a:hover {
+    color: #35d487; /* slightly brighter color on hover */
+  }
+  
+  .footer-social ul {
+    list-style: none;
+    display: flex;
+  }
+  
+  .social-icon {
+    text-decoration: none;
+    color: #198754;
+    margin: 0 10px;
+    transition: color 0.3s ease-in-out;
+  }
+  
+  .social-icon:hover {
+    color: #146c43; /* slightly darker color on hover */
+  }
+  
+  .footer-bottom {
+    font-size: 11px;
+    color: #198754;
+    display: flex;
+    margin: 20px 30px;
+    justify-content: center;
+    align-items: center;
+  }
+  .terms{
+    display: flex; 
+  }
+  .footer-bottom .copyright{
+    flex:1;
+  }
+  
+  .signup{
+    display:grid;
+  }
+
+  .signup p{
+    font-weight: 700;
+    margin-bottom: 10px;
+    text-align: right;
+  }
+
+  .signup p:hover{
+    color: black;
+  }
+
+  .signup a{
+    text-decoration: none;
+    color:#198754
+  }
+
+  .terms p{
+    margin: 0px 0px 0px 20px ;
+  }
+
+  .signup-input button{
+    margin-left: 7px;
+  }
+
+  .signup-input button:hover{
+    background-color: black;
+  }
+
+  .signup-input input{
+    border-radius: 20px;
+    padding: 11px 20px;
+    color: #198754;
+    font-weight: 700;
+    border-color: #198754;
+    outline: none;
+  }
+
+  .signup-input button{
+    background-color: #198754;
+    border: 0;
+    border-radius: 20px;
+    padding: 11px 20px;
+    color: white;
+    font-weight: 700;
+  }
+
+  .signup-input input::placeholder{
+    color: #198754;
+  }

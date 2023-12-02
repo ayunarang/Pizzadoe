@@ -1,0 +1,13 @@
+.password-img{
+    cursor: pointer;
+    height: 19px;
+    width: 19px;
+    position: absolute;
+    margin: auto 18px;
+}
+
+.password-div{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}

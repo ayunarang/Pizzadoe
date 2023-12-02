@@ -1,0 +1,41 @@
+.order-row{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.admin-status{
+margin-top: 15px;
+font-size: 13px;
+}
+.admin-status label{
+    margin-right: 10px;
+}
+.right-side{
+   justify-self:flex-end;
+}
+
+.custom-detail{
+    font-size:13px;
+}
+
+.left-side h4{
+    margin-bottom: 15px;
+}
+
+.order h4{
+    margin-right: 100px;
+    width: 100px;
+
+}
+.order-list{
+    width:100%;
+}
+
+.order-column{
+    width:100%;
+}
+
+.right-custom-side{
+    max-width: fit-content;
+}
