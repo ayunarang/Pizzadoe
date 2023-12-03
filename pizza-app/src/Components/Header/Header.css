@@ -1,9 +1,11 @@
 
 
-  .header-container{
+.header-container{
     margin: 0;
     padding: 0;
     width: 100%;
+    display: flex;
+    flex-direction: column;
   }
 
 .custom-nav-class{
@@ -13,7 +15,52 @@
     padding: 30px 90px;
 }
 
+.user-icon{
+    cursor: pointer;
+    margin: 0px;
+}
 
+.logout-icon{
+    margin-left: 5px;
+}
+.background-div{
+    background-color:transparent;
+    border-radius: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0px 0px 0px 35px;
+    height: 33px;
+    width: 33px;
+}
+
+.profile-card{
+    background-color: gainsboro;
+    padding: 22px 15px 0px 15px;
+    z-index: 11;
+    position: absolute;
+    align-self: flex-end;
+    justify-self: flex-end;
+    margin: 81px 82px;
+    font-size: 13px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.profile-card ul{
+    margin: 0;
+}
+
+.profile-card ul li{
+    margin-bottom: 7px;
+}
+.profile-card .item:hover{
+font-weight: 600;
+}
+
+.background-div:hover{
+background-color: #198754;
+}
 
 .custom-item {
     color: white;

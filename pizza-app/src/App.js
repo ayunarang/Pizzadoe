@@ -8,6 +8,7 @@ import Orders from './Components/Orders/Orders.jsx';
 import NewOrders from './Components/NewOrders/NewOrders.jsx';
 import Custompizza from './Components/Custompizza/Custompizza.jsx';
 import ForgotPassword from './Components/ForgotPassword/ForgotPassword.jsx';
+import ChangePassword from './Components/ChangePassword/ChangePassword.jsx';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -28,6 +29,7 @@ function App() {
               <Route path="/neworders" element={<NewOrders />} />
               <Route path="/custompizza" element={<Custompizza />} />
               <Route path="/forgotpassword" element={<ForgotPassword/>}/>
+              <Route path="/changepassword" element={<ChangePassword/>}/>
             </Routes>
             <ToastContainer />
           </div>

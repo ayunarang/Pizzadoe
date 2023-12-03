@@ -80,6 +80,42 @@ var instance = new Razorpay({
   key_secret: api_secret,
 });
 
+
+app.get('/api/getUserEmail/:userId', async (req, res) => {
+  const userId = req.params.userId;
+  const user = await User.findById(userId);
+  const email = user.email;
+  res.status(200).json({ success: true, email: email });
+
+})
+
+app.post('/api/changepassword/:userId', async (req, res) => {
+  const userId = req.params.userId;
+  const user_given_password = req.body.user_entered_old_password;
+  const new_password = req.body.user_entered_new_password;
+  try {
+    const user = await User.findById(userId);
+    const password = user.password;
+
+    let comparepassword = await bcrypt.compare(user_given_password, password);
+
+    if (comparepassword) {
+      const salt = await bcrypt.genSalt(10);
+      let securepassword = await bcrypt.hash(new_password, salt);
+      user.password = securepassword;
+      console.log("password changed");
+      await user.save();
+      res.status(200).json({ message: "Password changed" })
+    } else {
+      res.status(200).json({ message: "Incorrect old password" })
+    }
+  }
+  catch (error) {
+    console.log(error);
+  }
+
+});
+
 app.get('/api/checkout/key', async(req, res) => {
     try{res.status(200).json({key : api_key});
     
