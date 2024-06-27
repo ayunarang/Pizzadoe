@@ -238,8 +238,8 @@ app.post("/api/createuser", [
         }}
         const userId = data.user.id.toString();
   
-      const authtoken = jwt.sign(data, process.env.jwtSecret);
-      res.json({ success: true , authtoken: authtoken, userId: userId , Role: "user"});
+      // const authtoken = jwt.sign(data, process.env.jwtSecret);
+      res.json({ success: true , userId: userId , Role: "user"});
     } catch (error) {
       console.log(error);
       res.json({ success: false });
@@ -275,8 +275,8 @@ app.post("/api/loginuser", async (req, res) => {
     const role= user.role;
 
     
-    const authtoken = jwt.sign(data, process.env.jwtSecret);
-    res.json({ success: true, authtoken: authtoken, userId: userId , Role: role});
+    // const authtoken = jwt.sign(data, process.env.jwtSecret);
+    res.json({ success: true, userId: userId , Role: role});
   } catch (error) {
     console.log(error);
     res.json({ success: false });
