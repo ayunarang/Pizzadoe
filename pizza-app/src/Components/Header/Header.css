@@ -12,8 +12,22 @@
     z-index:10;
     position: absolute;
     width:100%;
-    padding: 30px 90px;
+    padding: 30px 7.5rem;
+    display: flex;
 }
+
+.header-logo {
+    background-color: #f42b03;
+    background-image: linear-gradient(316deg, #f42b03 0%, #ffbe0b 74%);
+    -webkit-background-clip: text;
+    color: transparent;
+    display: inline-block;
+    font-size: 1.9rem;
+    font-weight: 900;
+    font-style: italic;
+    align-items: center;
+  }
+  
 
 .user-icon{
     cursor: pointer;
@@ -67,42 +81,71 @@ background-color: #198754;
     text-decoration: none;
     margin: 0px 20px;
     white-space: nowrap;
-   
-      
+    font-size: 1rem;
+    width:fit-content;
+    position: relative;
 }
+
+.custom-item::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -3px; 
+    width: 0;
+    height: 2px;
+    background-color: #FA6709;
+    /* background-color: #f42b03;
+    background-image: linear-gradient(316deg, #f42b03 0%, #ffbe0b 74%); */
+    transition: width 0.5s; 
+  }
+  
+  .custom-item:hover::after {
+    width: 100%;
+  }
 
 .header-right{
     display:flex;
    justify-content: space-between;
+   width:100%;
 }
 
 .header-right ul li{
     margin:0;
     padding: 0;
 }
-  
-  .custom-item:hover {
-    background-color: #f42b03;
-    background-image: linear-gradient(316deg, #f42b03 0%, #ffbe0b 74%);
-    -webkit-background-clip: text;
-    color: transparent;
-    display: inline-block;
-    transition: background-color 0.3s; /* Optional: Add transition for a smooth effect */
-}
+
 
 .custom-title{
-    font-weight: 500;
-    color: 	#198754;
+    color:#198754;
     margin: 0px 0px 0px 35px;
+    font-size: 1rem;
+    font-weight: 600;
+    width:fit-content;
+    position: relative;
 }
 
-.custom-title:hover{
-    color:white;
-}
+.custom-title::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -3px; 
+    width: 0;
+    height: 2px;
+    background-color: white;
+    transition: width 0.5s; 
+  }
+
+  .custom-title:hover{
+    color:#198754;
+  }
+  
+  .custom-title:hover::after {
+    width: 100%;
+  }
 
 
 .custom-background{
-    background-color: 	#198754;
+    background-color:#198754;
     font-weight: 500;
     color: black;
 }
@@ -110,4 +153,52 @@ background-color: #198754;
 .custom-background:hover{
     background-color: #085125;
     color: white;
+}
+
+@media only screen and (max-width: 610px) {
+
+    .header-container{
+        position: fixed;
+        z-index:10000;
+    }
+
+    .custom-nav-class{
+        top:0;
+        width: 100vh;
+        display: flex;
+        justify-content: space-between;
+        padding: 30px 4rem;
+        background-color: black;
+        
+    }
+
+    .custom-nav-class a{
+        font-size: 2.85rem;
+    }
+
+    .header-right ul{
+        display:none;
+    }
+
+    .header-right .nav-link{
+        display:none;
+    }
+  
+    .header-right {
+      display: block;
+      max-width: fit-content;
+      align-items: center;
+    }
+
+    .user-icon{
+        height: 3rem;
+        width: 3rem;
+    }
+    
+
+    .hamburger-menu{
+        height: 3rem;
+        width: 3rem;
+        margin-left: 3rem;
+    }
 }

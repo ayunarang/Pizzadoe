@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import '../LogIn/Login.css'; 
 import '../SignUp/SignUp.css'
 import 'react-toastify/dist/ReactToastify.css';
-import CustomToast from '../Display/CustomToast.jsx';
+import {CustomToast} from '../Display/CustomToast';
 import showPasswordImg from '../../images/icons8-show-24.png'
 import hidePasswordImg from '../../images/icons8-hide-24.png'
 

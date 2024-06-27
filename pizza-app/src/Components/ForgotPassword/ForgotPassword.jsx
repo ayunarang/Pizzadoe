@@ -52,7 +52,7 @@ console.log("verifying otp:" , otp)
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({}),
+        body: JSON.stringify({ useremail: email}),
       });
       const data = await response.json();
       if(data.message==="OTP verified"){

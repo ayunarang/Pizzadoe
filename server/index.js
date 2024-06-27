@@ -1,55 +1,35 @@
 const path = require('path')
-require('dotenv').config({ path: path.resolve(__dirname, '../.env') })
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const mongoDb = require('./db.js');
 const User = require('./models/User.js');
-const InventoryItem= require('./models/Inventory.js');
-const bcrypt= require('bcrypt')
-const jwt= require('jsonwebtoken')
+const InventoryItem = require('./models/Inventory.js');
+const OTP = require('./models/OTP.js')
+const EmailContent = require('./mail_template/send_otp.js');
+const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
 const Razorpay = require('razorpay');
 const nodemailer = require('nodemailer');
-const NewOrders= require('./models/NewOrders.js');
+const NewOrders = require('./models/NewOrders.js');
 const { body, validationResult } = require('express-validator');
 
 
+const sendEmailNotificationForotp = (message) => {
 
-const ADMIN= process.env.ADMIN;
-const user= process.env.user;
-const pass= process.env.password;
-const jwtSecret= process.env.JWTSecret;
-
-
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: user,
-    pass: pass,
-  },
-});
-
-const sendEmailNotification = (subject, message) => {
-  const mailOptions = {
-    from: ADMIN,
-    to: ADMIN, 
-    subject: subject,
-    text: message,
-  };
-  transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-      console.error('Error sending email:', error);
-    } else {
-      console.log('Email sent:', info.response);
-    }
+  const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: process.env.user,
+      pass: process.env.password,
+    },
   });
-};
 
-const sendEmailNotificationForotp = (subject, message, useremail) => {
   const mailOptions = {
-    from: ADMIN,
-    to: useremail, 
-    subject: subject,
-    text: message,
+    from: process.env.ADMIN,
+    to: process.env.ADMIN,
+    subject: 'Forgot Password OTP',
+    html: message,
   };
   transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
@@ -72,12 +52,10 @@ app.use(express.json());
 mongoDb();
 
 
-api_key=process.env.RAZORPAY_API_KEY;
-api_secret=process.env.RAZORPAY_SECRET;
 
 var instance = new Razorpay({
-  key_id: api_key,
-  key_secret: api_secret,
+  key_id: process.env.RAZORPAY_API_KEY,
+  key_secret:  process.env.RAZORPAY_SECRET,
 });
 
 
@@ -116,9 +94,10 @@ app.post('/api/changepassword/:userId', async (req, res) => {
 
 });
 
-app.get('/api/checkout/key', async(req, res) => {
-    try{res.status(200).json({key : api_key});
-    
+app.get('/api/checkout/key', async (req, res) => {
+  try {
+    res.status(200).json({ key: process.env.RAZORPAY_API_KEY});
+
   } catch (error) {
     console.error(error.message);
     res.status(500).json({ error: 'Server error' });
@@ -126,56 +105,56 @@ app.get('/api/checkout/key', async(req, res) => {
 });
 
 
-app.post('/api/checkout', async(req, res) => {
+app.post('/api/checkout', async (req, res) => {
   try {
     const options = {
-      amount: 100,  
+      amount: 100,
       currency: "INR",
-    
+
     };
-    const order= await instance.orders.create(options);
+    const order = await instance.orders.create(options);
     res.status(200).json({ order });
-    
+
   } catch (error) {
     console.error(error.message);
     res.status(500).json({ error: 'Server error' });
   }
 });
 
-app.post('/api/checkout/paymentVerification/:userId', async(req, res) => {
+app.post('/api/checkout/paymentVerification/:userId', async (req, res) => {
   try {
     const userId = req.params.userId;
     const user = await User.findById(userId);
 
-    const cartItems=user.cartItem;
+    const cartItems = user.cartItem;
     console.log(cartItems);
 
-    const placedorders= user.PlacedOrders;
+    const placedorders = user.PlacedOrders;
     // //send for saving in database
-    placedorders.push(cartItems );
+    placedorders.push(cartItems);
     user.cartItem = [];
 
 
     //user info
     const olduser = await NewOrders.findOne({ customer_id: userId });
-    if(!olduser){
-  const customer_id= userId;
-  const name= user.name;
-  const email= user.email;
-  const location= user.location;
-  const saveUserInDb = new NewOrders({
-    customer_id: customer_id,
-    name: name,
-    email: email,
-    location: location,
-    Order: [cartItems],
-  });
+    if (!olduser) {
+      const customer_id = userId;
+      const name = user.name;
+      const email = user.email;
+      const location = user.location;
+      const saveUserInDb = new NewOrders({
+        customer_id: customer_id,
+        name: name,
+        email: email,
+        location: location,
+        Order: [cartItems],
+      });
 
-  await saveUserInDb.save();
-}else{
-  olduser.Order.push(cartItems);
-  await olduser.save();
-}
+      await saveUserInDb.save();
+    } else {
+      olduser.Order.push(cartItems);
+      await olduser.save();
+    }
 
     await InventoryItem.updateMany({}, { $inc: { quantity: -1 } });
     await user.save();
@@ -191,14 +170,14 @@ app.post('/api/checkout/paymentVerification/:userId', async(req, res) => {
     );
     console.log('email send');
     res.redirect("http://localhost:3000/orders");
-    
+
   } catch (error) {
     console.error('Server error:', error);
     res.status(500).json({ error: 'Server error' });
   }
 });
 
-app.get('/api/orders/:userId', async(req, res) => {
+app.get('/api/orders/:userId', async (req, res) => {
   const userId = req.params.userId;
   const user = await User.findById(userId);
   if (!user) {
@@ -206,7 +185,7 @@ app.get('/api/orders/:userId', async(req, res) => {
   }
   const orders = user.PlacedOrders.flat();
 
-  res.json({Orders: orders});
+  res.json({ Orders: orders });
 });
 
 
@@ -224,42 +203,43 @@ app.post("/api/createuser", [
   body('location')
     .notEmpty().withMessage('Location is required'),
 ],
-async (req, res) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    // Return a JSON response with details about the validation errors
-    return res.status(400).json({ success: false, errors: errors.array() });
-  }
-  try {
-    
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      // Return a JSON response with details about the validation errors
+      return res.status(400).json({ success: false, errors: errors.array() });
+    }
+    try {
 
-    const salt = await bcrypt.genSalt(10);
-    let securepassword = await bcrypt.hash(req.body.password, salt);
 
-    const saveUserInDb = new User({
-      name: req.body.name,
-      email: req.body.email,
-      password: securepassword,
-      location: req.body.location,
-      cartItems: []
-    });
+      const salt = await bcrypt.genSalt(10);
+      let securepassword = await bcrypt.hash(req.body.password, salt);
 
-    await saveUserInDb.save();
-    const usercredentials = saveUserInDb._id;
-    
-    const data = {
-      user: {
-        id: usercredentials
-      }}
-      const userId = data.user.id.toString();
+      const saveUserInDb = new User({
+        name: req.body.name,
+        email: req.body.email,
+        password: securepassword,
+        location: req.body.location,
+        cartItems: [],
+        PlacedOrders: [],
+      });
 
-    const authtoken = jwt.sign(data, jwtSecret);
-    res.json({ success: true , authtoken: authtoken, userId: userId , Role: "user"});
-  } catch (error) {
-    console.log(error);
-    res.json({ success: false });
-  }
-});
+      await saveUserInDb.save();
+      const usercredentials = saveUserInDb._id;
+
+      const data = {
+        user: {
+          id: usercredentials
+        }}
+        const userId = data.user.id.toString();
+  
+      const authtoken = jwt.sign(data, process.env.jwtSecret);
+      res.json({ success: true , authtoken: authtoken, userId: userId , Role: "user"});
+    } catch (error) {
+      console.log(error);
+      res.json({ success: false });
+    }
+  });
 
 app.post("/api/loginuser", async (req, res) => {
   try {
@@ -271,27 +251,27 @@ app.post("/api/loginuser", async (req, res) => {
     let usercredentials = await User.findOne({ email });
 
     if (!usercredentials) {
-      return res.json({  success: false ,message: "Try signing in first" });
+      return res.json({ success: false, message: "Try signing in first" });
     }
-  
+
     let comparepassword = await bcrypt.compare(password, usercredentials.password);
 
     if (!comparepassword) {
-      return res.json({  success: false ,message: "Incorrect password" });
-    } else {
-      const data = {
-        user: {
-          id: usercredentials._id
-        }  
-      };
-      const userId = data.user.id.toString();
-      const user = await User.findById(userId);
-      const role= user.role;
-
-      
-      const authtoken = jwt.sign(data, jwtSecret);
-      res.json({ success: true, authtoken: authtoken, userId: userId , Role: role});
+      return res.json({ success: false, message: "Incorrect password" });
     }
+
+    const data = {
+      user: {
+        id: usercredentials._id
+      }  
+    };
+    const userId = data.user.id.toString();
+    const user = await User.findById(userId);
+    const role= user.role;
+
+    
+    const authtoken = jwt.sign(data, process.env.jwtSecret);
+    res.json({ success: true, authtoken: authtoken, userId: userId , Role: role});
   } catch (error) {
     console.log(error);
     res.json({ success: false });
@@ -301,7 +281,7 @@ app.post("/api/loginuser", async (req, res) => {
 app.post('/api/foodData', (req, res) => {
   try {
     console.log('Received a POST request to /api/foodData');
-    res.json([global.food_items]);
+    res.json([global.pizzaCategory]);
   } catch (error) {
     console.error(error.message);
     res.status(500).json({ error: 'Server error' });
@@ -321,7 +301,7 @@ app.post('/api/AdminData', (req, res) => {
 
 app.post(`/api/add-to-cart/:userId`, async (req, res) => {
 
-  if (req.params.userId=="null") {
+  if (req.params.userId == "null") {
     return res.status(400).json({ error: 'User not found' });
   }
 
@@ -361,7 +341,7 @@ app.post(`/api/add-to-cart/:userId`, async (req, res) => {
 
 });
 
-app.get('/api/cart/items/:userId', async(req, res) => {
+app.get('/api/cart/items/:userId', async (req, res) => {
   const userId = req.params.userId;
   const user = await User.findById(userId);
   const cartItems = user.cartItem;
@@ -369,40 +349,40 @@ app.get('/api/cart/items/:userId', async(req, res) => {
   res.json(cartItems);
 });
 
-app.post('/api/stock/:itemId', async(req, res)=>{
-  try{
+app.post('/api/stock/:itemId', async (req, res) => {
+  try {
     const itemId = req.params.itemId;
     const item = await InventoryItem.findById(itemId);
-    item.quantity+=10;
+    item.quantity += 10;
     await item.save();
     res.status(200).json({ message: 'Stock updated successfully', item });
   }
-  catch(error){
+  catch (error) {
     res.status(500).json({ error: 'Server error' });
   }
 
 });
 
-app.get('/api/neworders', async(req, res) => {
-  try{
-  await res.status(200).json([global.neworders]);
+app.get('/api/neworders', async (req, res) => {
+  try {
+    await res.status(200).json([global.neworders]);
 
   }
-  catch(error){
-    console.log('error:' ,error);
-    res.status(400).json({success: false});
+  catch (error) {
+    console.log('error:', error);
+    res.status(400).json({ success: false });
   }
 });
 
-app.get('/api/custompizza', async(req, res) => {
-  try{
+app.get('/api/custompizza', async (req, res) => {
+  try {
     console.log(global.CustomPizza_data)
-  res.status(200).json(global.CustomPizza_data);
+    res.status(200).json(global.CustomPizza_data);
 
   }
-  catch(error){
-    console.log('error:' ,error);
-    res.status(400).json({success: false});
+  catch (error) {
+    console.log('error:', error);
+    res.status(400).json({ success: false });
   }
 });
 
@@ -455,20 +435,20 @@ app.delete('/api/cart/remove/:userId/:itemId', async (req, res) => {
 });
 
 
-app.post('/api/forgotpassword', async(req, res) => {
-  try{
+app.post('/api/forgotpassword', async (req, res) => {
+  try {
     const email = req.body.useremail;
     const user = await User.findOne({ email });
 
-    if(!user){
-      res.status(200).json({message: "User not registered!"})
+    if (!user) {
+      res.status(200).json({ message: "User not registered!" })
     }
-    else{
-      
-      res.status(200).json({message: "User found!"})
+    else {
+
+      res.status(200).json({ message: "User found!" })
     }
   }
-  catch{
+  catch {
     res.status(400).json({ error: `server error` });
   }
 
@@ -489,63 +469,84 @@ const generateRandomOTP = () => {
 
 let generatedOTP;
 
-app.post('/api/sendotp', async(req, res) => {
-  try{
+app.post('/api/sendotp', async (req, res) => {
+  try {
     const email = req.body.useremail;
-    generatedOTP= generateRandomOTP();
-    const userRecord = await User.findOne({ email });
-    userRecord.otp= generatedOTP;
-    await userRecord.save();
-    const emailcontent=`Your OTP is: ${generatedOTP}`;
-    sendEmailNotificationForotp("OTP to verify Email", emailcontent, email);
+    console.log(email)
+    generatedOTP = generateRandomOTP();
+    console.log(generatedOTP)
+    const existingUserOTP = await OTP.findOne({ email });
+    if (existingUserOTP) {
+      existingUserOTP.otp = generatedOTP;
+      await existingUserOTP.save();
+    }
+    else {
+      const otpDoc = new OTP({ email: email, otp: generatedOTP });
+      await otpDoc.save();
+    }
 
+    console.log('saved');
+    const emailcontent = EmailContent(generatedOTP);
 
-    res.status(200).json({message: "Email sent"});
+    await sendEmailNotificationForotp(emailcontent);
+
+    res.status(200).json({ message: "Email sent" });
   }
-  catch{
+  catch {
     res.status(400).json({ error: `server error` });
   }
 
 });
 
-app.post('/api/verifyotp/:userotp', async(req, res) => {
-  try{
-    const otp= req.params.userotp;
-    console.log(otp);
-    if(otp===generatedOTP){
-      
-      const userRecord = await User.findOne({otp});
-      const userId= userRecord._id;
-      const Role= userRecord.role;
+app.post('/api/verifyotp/:userotp', async (req, res) => {
+  try {
+    const inputOtp = req.params.userotp;
+    //error scope
+    console.log(inputOtp);
+    const email = req.body.useremail;
+    //error scope
+    console.log(email);
+
+    const otpRecord = await OTP.findOne({ email });
+    const otp = otpRecord.otp;
+
+    if (otp === inputOtp) {
+
+      const userRecord = await User.findOne({ email });
+      const Role = userRecord.role;
+      const userId = userRecord._id;
+
       const data = {
         user: {
           id: userId
         }}
   
-      const authtoken = jwt.sign(data, jwtSecret);
+      const authtoken = jwt.sign(data, process.env.jwtSecret);
 
-      res.status(200).json({message: "OTP verified", userId: userId, authtoken: authtoken, Role: Role});
+      res.status(200).json({ message: "OTP verified", userId: userId, authtoken: authtoken, Role: Role });
     }
-    else{
-      res.status(200).json({message: "OTP declined"});
+    else {
+      res.status(200).json({ message: "OTP declined" });
     }
   }
-  catch{
+  catch {
     res.status(400).json({ error: `server error` });
   }
 
 });
 
-app.get('/api/checkuser/:userId', async(req, res) => {
-  const userId= req.params.userId;
+app.get('/api/checkuser/:userId', async (req, res) => {
+  const userId = req.params.userId;
 
-  if (userId==="null") {
+  if (userId === "null") {
     return res.status(400).json({ error: 'User not found' });
   }
-  else{
-    return res.status(200).json({sucess: true});
+  else {
+    return res.status(200).json({ sucess: true });
   }
 });
+
+
 
 
 

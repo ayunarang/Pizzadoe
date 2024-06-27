@@ -1,7 +1,7 @@
 .footer-container {
-    background-color: white;
+    background-color: #F5EFE6;
     color: #198754;
-    padding: 40px 0px 20px 0px;
+    padding: 100px 0px 20px 0px;
     display:flex;
   }
   
@@ -63,8 +63,9 @@
   .footer-bottom {
     font-size: 11px;
     color: #198754;
+    background-color: #F5EFE6;
     display: flex;
-    margin: 20px 30px;
+    padding: 20px 30px;
     justify-content: center;
     align-items: center;
   }

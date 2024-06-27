@@ -1,12 +1,9 @@
-const path = require('path')
-require('dotenv').config({ path: path.resolve(__dirname, '../.env') })
 
 const mongoose= require('mongoose')
-const mongoURI= process.env.MONGO
 
 const mongoDb=async()=>{
     try {
-        await mongoose.connect(mongoURI);
+        await mongoose.connect( process.env.MONGO);
         console.log('Database working successfully');
         const fetcheddata= await mongoose.connection.db.collection("pizza_items");
         const inventorydata= await mongoose.connection.db.collection("inventory");
@@ -16,8 +13,11 @@ const mongoDb=async()=>{
         const data= await fetcheddata.find({}).toArray();
         const orders= await pastorders.find({}).toArray();
         const customdata= await custompizza.find({}).toArray();
-        
+        const pizzaCategory= await mongoose.connection.db.collection("pizza_menu");
+        const pizzacategory= await pizzaCategory.find({}).toArray();
 
+
+        global.pizzaCategory= pizzacategory;
         global.food_items= data;
         global.admin_items= admindata;
         global.neworders=orders;

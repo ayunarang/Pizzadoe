@@ -34,7 +34,7 @@ const Cart = () => {
         currency: "INR",
         name: "Ayushi Narang",
         description: "Test Transaction",
-        image: "https://example.com/your_logo",
+        image: "",
         order_id: order.id,
         callback_url: `http://localhost:5000/api/checkout/paymentVerification/${userID}`,
         prefill: {
@@ -64,6 +64,8 @@ const Cart = () => {
   };
 
   const removeItemFromCart = async (itemID) => {
+    console.log(itemID)
+    console.log("delete try")
     try {
       await axios.delete(`http://localhost:5000/api/cart/remove/${userID}/${itemID}`);
 
@@ -100,7 +102,7 @@ const Cart = () => {
               {cart.map(item => (
                 <li key={item.id}>
                   {item.img!==""?(<>
-                    <img src={item.img} height="100" width="135"></img>
+                    <img src={item.img} height="100" width="135" class="cart-img"></img>
                   </>):(<>
                     <img src={custompizza} height="150" width="135" class="custom-pizza-img"></img>
                   </>)}
@@ -111,7 +113,7 @@ const Cart = () => {
                       <p className='price'> Rs. {item.price} </p>
                     </div>
                     <div className="delete-option">
-                      <img src={deleteIcon} height={"22px"} width={"20px"} class="delete-button" onClick={() => removeItemFromCart(item.id)}></img>
+                      <img src={deleteIcon} height={"22px"} width={"20px"} class="delete-button" onClick={() => removeItemFromCart(item._id)}></img>
                     </div>
                   </div>
                 </li>

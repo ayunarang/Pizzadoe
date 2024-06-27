@@ -173,7 +173,7 @@ const Custompizza = () => {
           <div className="row px-3 py-3">
             {items.options.map((options) => (
               <div className="col-sm-4 mb-6 px-4 py-2" key={options._id}>
-                <div className="card bg-dark text-white">
+                <div className="card text-white">
                   <img
                     src={options.img}
                     className="card-img"

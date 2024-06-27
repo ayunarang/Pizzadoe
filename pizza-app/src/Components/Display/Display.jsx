@@ -1,191 +1,43 @@
-import React, { useEffect, useState } from 'react';
-import custompizza from'../../images/custom-removebg-preview (1) (1) (1).png'
-import homepizza from '../../images/1170805d-75a7-4328-af57-17c697faf225_2k.jpeg';
+// eslint-disable react/jsx-no-undef 
+
+import React, { useDebugValue, useEffect, useState } from 'react';
+import custompizza from '../../images/custom-removebg-preview (1) (1) (1).png'
+import homepizza from '../../images/1170805d-75a7-4328-af57-17c697faf225_2k_LE_auto_x2.jpg';
 import './Display.css';
 import 'react-toastify/dist/ReactToastify.css';
-import CustomToast from './CustomToast';
+import {CustomToast} from './CustomToast';
 import { Link, useNavigate } from 'react-router-dom';
+import menuIcon from '../../images/icons8-cutlery-64.png'
+import SpinWheel from './SpinningWheel/SpinTheWheel.jsx';
+import { useDispatch, useSelector } from 'react-redux';
+import { setDiscount } from '../Redux/reducers.js';
+import Explore from '../Explore/Explore.jsx';
+import Menu from '../Menu/Menu.jsx';
 
 
 
-const Display = () => {
-  const navigate= useNavigate();
+const Display = ({ Userdata, AdminData }) => {
+  const navigate = useNavigate();
+  const dispatch= useDispatch()
 
-  const [food_items, setfood_items] = useState([]);
-  const [AdminData, setAdminData] = useState([]);
+  const [discountValue, setdiscountValue] = useState(0);
 
-  const display_data = async () => {
-    try {
-      let response = await fetch(`http://localhost:5000/api/foodData`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
+  const discount = useSelector((state) => state.discount.discount);
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
+  const [showDiscountModal, setshowDiscountModal] = useState(false);
 
-      response = await response.json();
-      // Adding local state variables for each food item
-      const foodItemsWithState = response[0].map((food) => ({
-        ...food,
-        qty: 1,
-        size: 'small',
-        totalPrice: food.options.small || 0,
-      }));
-      setfood_items(foodItemsWithState);
-    } catch (error) {
-      console.error('Error fetching data:', error.message);
-    }
-  };
-
-  const displayAdminData = async () => {
-    try {
-      let response = await fetch(`http://localhost:5000/api/AdminData`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-      const data = await response.json();
-      setAdminData([...data]);
-    } catch (error) {
-      console.error('Error fetching data:', error.message);
-    }
-  };
-
-  const role = localStorage.getItem("Role");
   useEffect(() => {
-    console.log('Effect is running');
-
-    if (role === "Admin") {
-      displayAdminData();
-
-    } else if (role !== "Admin" || !role) {
-
-      display_data();
+    if (discount !== 0 ) {
+      console.log(discount);
+      setdiscountValue(discount);
+      setshowDiscountModal(true);
     }
+  }, [discount]);
 
-  }, []);
+  const closeDiscountModal = () => {
+    setshowDiscountModal(false);
+  }
 
-
-
-
-  const addToCart = (selectedFood) => {
-    if (selectedFood) {
-      const currentTime = new Date();
-
-      const cartItem = {
-        id: selectedFood._id,
-        name: selectedFood.name,
-        price: selectedFood.totalPrice,
-        qty: selectedFood.qty,
-        size: selectedFood.size,
-        img: selectedFood.image_url,
-        timeAdded: currentTime.toLocaleString(),
-      };
-
-      console.log('Sending to server:', cartItem); // Log the data being sent to the server
-      const userId = localStorage.getItem('userID');
-      console.log(userId);
-
-      fetch(`http://localhost:5000/api/add-to-cart/${userId}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(cartItem),
-      })
-        .then(response => response.json())
-        .then(data => {
-          console.log('Server response:', data);
-
-          if (data.error) {
-
-            if (data.error === 'Item already in cart') {
-              showToastForCaseOne();
-            } else if (data.message === 'Item already in cart. Please select different size option') {
-              showToastForCaseTwo();
-            }
-            else if(data.error === 'User not found'){
-              showToastForCaseThree();
-            }
-          }
-          else if (data.message) {
-            if (data.message === 'Item added to cart') {
-              showToast();
-            }
-          }
-        })
-        .catch(error => console.error('Error adding to cart:', error));
-    }
-  };
-
-
-  const calculatePrice = (food) => {
-    const { qty, size, options } = food;
-    const selectedOption = options[size] || 0;
-    const totalPrice = selectedOption * qty;
-
-    return totalPrice;
-  };
-
-  const handleQtyChange = (index, qty) => {
-    setfood_items((prevFoodItems) =>
-      prevFoodItems.map((food, i) =>
-        i === index
-          ? { ...food, qty, totalPrice: calculatePrice({ ...food, qty }) }
-          : food
-      )
-    );
-  };
-
-  const handleSizeChange = (index, size) => {
-    setfood_items((prevFoodItems) =>
-      prevFoodItems.map((food, i) =>
-        i === index
-          ? { ...food, size, totalPrice: calculatePrice({ ...food, size }) }
-          : food
-      )
-    );
-  };
-
-
-  const checkuser = async () => {
-    try {
-      const userId= localStorage.getItem("userID");
-      const response = await fetch(`http://localhost:5000/api/checkuser/${userId}`);
-      const data = await response.json();
-      if (data.error) {
-        if (data.error === 'User not found') {
-          showToastForCaseThree();
-        }
-      } else {
-        navigate("/custompizza"); 
-      }
-    } catch (error) {
-      console.error('Error fetching user data:', error);
-    }
-  };
-
-
-  const showToastForCaseOne = () => {
-    CustomToast({ message: 'Item already in cart', type: 'error' });
-  };
-
-  const showToastForCaseTwo = () => {
-    CustomToast({ message: 'Item already in cart. Please select different quantity', type: 'error' });
-  };
-
-  const showToastForCaseThree = () => {
-    CustomToast({ message: 'You need to sign in first!', type: 'error' });
-  };
-
-  const showToast = () => {
-    CustomToast({ message: 'Item added to cart', type: 'success' });
-  };
 
   const increaseStock = async (id) => {
     const response = await fetch(`http://localhost:5000/api/stock/${id}`, {
@@ -196,7 +48,7 @@ const Display = () => {
       body: JSON.stringify(),
     })
     if (response.ok) {
-      await displayAdminData();
+      // await displayAdminData();
       console.log('Stock increased successfully');
 
     } else {
@@ -204,112 +56,32 @@ const Display = () => {
     }
   }
 
+      const checkuser = () => {
+      const userId = localStorage.getItem("userID");
+      if (!userId){
+        showToastForCaseThree();
+      }
+      else{
+        navigate("/custompizza");
+
+      }
+  };
+
+  const showToastForCaseThree = () => {
+    CustomToast({ message: 'You need to sign in first!', type: 'error' });
+  };
+
 
   return (
-    <>
-    
-      <div className="image-container">
-        <div className="image-wrapper">
-          <img src={homepizza} alt="Pizza" className="image home-pizza"  />
-          <div className="overlay"></div>
-        </div>
-        <div className="text-on-right">
-          <h1>A taste that unmistakably speaks for itself.</h1>
+    <div className='display-body-container'>
 
-        </div>
-      </div>
-  
-      {role !== "Admin" && (
-        <>
-          {food_items.length !== 0 ? (
-            <>
-            <div className="menu-section" id="menu">
-              <div className="row px-3">
-                {food_items.map((data, index) => (
-                  <div key={index} className="col-sm-6 mb-4 px-4 py-2">
-                    <div className="card bg-dark text-white">
-                      <img
-                        src={data.image_url}
-                        className="card-img"
-                        alt={data.name}
-                        height="300"
-                        width="290"
-                      />
-                      <div className="card-img-overlay custom-overlay d-grid">
-                        <div className="row">
-                          <div className="price mb-2">
-                            Price : <span>Rs. {data.totalPrice}</span>
-                          </div>
-                          <h5 className="card-title pizza-name">{data.name}</h5>
-                          <p className="card-text custom">{data.description}</p>
-                        </div>
-                        <div className="align-self-end d-flex">
-                          <div className="category">
-                            <select
-                              className="m-2 outline-none px-1 py-1 custom outline-none"
-                              onChange={(e) =>
-                                handleQtyChange(index, e.target.value)
-                              }
-                            >
-                              {Array.from(Array(6), (e, i) => (
-                                <option key={i + 1} value={i + 1}>
-                                  {i + 1}
-                                </option>
-                              ))}
-                            </select>
-  
-                            <select
-                              className="m-2 outline-none px-1 py-1 custom outline-none"
-                              onChange={(e) =>
-                                handleSizeChange(index, e.target.value)
-                              }
-                            >
-                              <option value="small">Small</option>
-                              <option value="regular">Regular</option>
-                              <option value="large">Large</option>
-                            </select>
-                          </div>
-                          <button
-                            className="text-white outline-none custom-button rounded"
-                            onClick={() => {
-                              addToCart(data);
-                            }}
-                          >
-                            Add to cart
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            
-            </div>
-            <div class="custom-pizza-div" id="custom-pizza">
-            
-              <div class="custom-pizza-text">
-              <div class="new-feature">Try our new feature</div>
-              <div class="left-part">Choose from our menu or customize your own pizza!</div>
-                <button onClick={checkuser}>Try now</button></div>
-                <img src={custompizza} class="custom-pizza-image"></img>
-                </div>
 
-            </>
-          ) : (
-            <p>No food items available</p>
-          )}
-        </>
-      )}
+    {(AdminData && AdminData.length>0)? 
   
-      <div>
-        <div>
-          {role === "Admin" && (
-            <>
-              {AdminData.length !== 0 ? (
                 <div className="menu-section" id="store">
-                  <div className="row px-3" >
+                  <div className="row px-2" >
                     {AdminData[0].map((data, index) => (
-                      <div key={index} className="col-sm-4 mb-4 px-4 py-2">
+                      <div key={index} className="col-sm-3 mb-3 px-4 py-2">
                         <div className="card bg-dark text-white">
                           <img
                             src={data.img}
@@ -342,18 +114,117 @@ const Display = () => {
                     ))}
                   </div>
                 </div>
-              ) : (
-                <p>No admin data available</p>
-              )}
-            </>
-          )}
+              
+    
+    : 
+
+    <>
+
+<div className="image-container">
+        <div className="image-wrapper">
+          <img src={homepizza} alt="Pizza" className="image home-pizza" />
+          <div className="overlay"></div>
+        </div>
+        <div className="text-on-right">
+          <h1>A taste that unmistakably speaks for itself.</h1>
+          <button className="head-to-menu"
+          onClick={() => navigate('/menu', { state: { data: Userdata } })}
+          >HEAD TO MENU
+            <img src={menuIcon} className='menu-icon'></img></button>
+
         </div>
       </div>
+
+
+      <div className="coupons-and-offers-section">
+        <div className="coupons-and-offers-container">
+          <div className="special-offer-heading-container">
+            <p className='special-offer-heading'>
+              SPECIAL OFFERS</p>
+          </div>
+
+          <div className="special-offers-list-container">
+
+            <div className="special-offers-list">
+              <p style={{ fontSize: "1.5rem", fontWeight: "500", marginBottom: "0.2rem" }}>1 + 1 Free</p>
+              <p>on Wednesdays.</p>
+            </div>
+
+            <hr className='vertical-hr'></hr>
+
+            <div className="special-offers-list">
+              <p style={{ fontSize: "1.5rem", fontWeight: "500", marginBottom: "0.2rem" }}>Free Shipping</p>
+              <p>for new users.</p>
+            </div>
+
+            <hr className='vertical-hr'></hr>
+
+            <div className="special-offers-list">
+              <p style={{ fontSize: "1.5rem", fontWeight: "500", marginBottom: "0.2rem" }}>10% Discount</p>
+              <p>with orders above 3 pizzas.</p>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+
+      <div className="new-customer-section">
+        <div className="spinning-wheel-text-section">
+          <p className='spinning-section-heading'>New <span style={{ color: "#198754", fontWeight: "600", fontSize: "2.4rem" }}>Lucky </span>User Discount!</p>
+          <div className="try-your-luck">Click on "SPIN" and try your luck.</div>
+          {!showDiscountModal ? <></> : (
+            <div className="discount-modal">
+              <div className="discount-modal-content">
+                <span className="discount-close-button" onClick={closeDiscountModal}>
+                  &times;
+                </span>
+                <div className="discount-modal-custom-container">
+                  <p class="discount-title">Congrats 🎉</p>
+                  <div className="discount-description">You got {discountValue}% discount on your first order!</div>
+                  <button className='signup-and-claim'
+                    onClick={() => {
+                      navigate("/createuser");
+                      closeDiscountModal();
+                    }}
+                  >Signup and Claim</button>
+                  <button className='dont-claim'
+                    onClick={closeDiscountModal}>
+                    Don't want to claim
+                  </button>
+                </div>
+
+              </div>
+            </div>
+
+          )}
+        </div>
+
+        <div className="spinning-wheel-section">
+          <div className="spinning-wheel"><SpinWheel /></div>
+        </div>
+
+      </div>
+      <Explore data ={Userdata} pageType="explore"/>
+      <div class="custom-pizza-div" id="custom-pizza">
+
+<div class="custom-pizza-text">
+  <div class="new-feature">Try our new feature</div>
+  <div class="left-part">Choose from our menu or customize your own pizza!</div>
+  <button onClick={checkuser}>Try now</button>
+
+</div>
+<img src={custompizza} class="custom-pizza-image"></img>
+</div>
+      </>
+    }
+
       
-      
-    </>
+    
+
+
+    </div>
   );
-  };
-  
-  export default Display;
-  
+};
+
+export default Display;

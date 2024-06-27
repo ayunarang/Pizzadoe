@@ -11,3 +11,10 @@
     justify-content: flex-end;
     align-items: center;
 }
+
+.custom-button{
+    background-color: #198754;
+    border:none;
+    font-weight: 600;
+}
+

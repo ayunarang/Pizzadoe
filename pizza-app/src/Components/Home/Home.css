@@ -1,0 +1,10 @@
+.home-container{
+    width:100%;
+}
+
+@media only screen and (max-width: 610px) {
+
+    .home-container{
+        width: 100vh;
+    }
+}
