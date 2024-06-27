@@ -169,7 +169,7 @@ const Explore = ({ data, pageType }) => {
       const userId = localStorage.getItem('userID');
       console.log(userId);
 
-      fetch(`http://localhost:5000/api/add-to-cart/${userId}`, {
+      fetch(`https://pizzadoe-mern.onrender.com/api/add-to-cart/${userId}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -13,7 +13,7 @@ const NewOrders = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/neworders');
+        const response = await fetch('https://pizzadoe-mern.onrender.com/api/neworders');
         const data = await response.json();
         setCustomers(...data);
       } catch (error) {
@@ -35,7 +35,7 @@ const NewOrders = () => {
 
 
     try {
-      const response = await fetch('http://localhost:5000/api/update-order-status', {
+      const response = await fetch('https://pizzadoe-mern.onrender.com/api/update-order-status', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

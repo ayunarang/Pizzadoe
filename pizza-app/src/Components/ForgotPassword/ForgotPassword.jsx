@@ -47,7 +47,7 @@ const ForgotPassword = () => {
   const verifyOTP=async(otp)=>{
     try {
 console.log("verifying otp:" , otp)
-      const response = await fetch(`http://localhost:5000/api/verifyotp/${otp}`, {
+      const response = await fetch(`https://pizzadoe-mern.onrender.com/api/verifyotp/${otp}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -76,7 +76,7 @@ console.log("verifying otp:" , otp)
     try {
       e.preventDefault();
   
-      const response = await fetch(`http://localhost:5000/api/forgotpassword`, {
+      const response = await fetch(`https://pizzadoe-mern.onrender.com/api/forgotpassword`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -87,7 +87,7 @@ console.log("verifying otp:" , otp)
       const data = await response.json();
       if(data.message==="User found!"){
         setshowmodal(true);
-        const response = await fetch(`http://localhost:5000/api/sendotp`, {
+        const response = await fetch(`https://pizzadoe-mern.onrender.com/api/sendotp`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

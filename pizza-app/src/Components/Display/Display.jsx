@@ -40,7 +40,7 @@ const Display = ({ Userdata, AdminData }) => {
 
 
   const increaseStock = async (id) => {
-    const response = await fetch(`http://localhost:5000/api/stock/${id}`, {
+    const response = await fetch(`https://pizzadoe-mern.onrender.com/api/stock/${id}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

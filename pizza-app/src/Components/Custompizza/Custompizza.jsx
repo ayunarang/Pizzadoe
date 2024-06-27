@@ -24,7 +24,7 @@ const Custompizza = () => {
 
   const fetchData = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/custompizza');
+      const response = await fetch('https://pizzadoe-mern.onrender.com/api/custompizza');
       const data = await response.json();
       setCategory(data);
     } catch (error) {
@@ -130,7 +130,7 @@ const Custompizza = () => {
       const userId = localStorage.getItem('userID');
       console.log(userId);
   
-      fetch(`http://localhost:5000/api/add-to-cart/${userId}`, {
+      fetch(`https://pizzadoe-mern.onrender.com/api/add-to-cart/${userId}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

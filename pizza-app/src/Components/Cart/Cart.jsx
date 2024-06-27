@@ -12,7 +12,7 @@ const Cart = () => {
   const userID = localStorage.getItem('userID');
 
   const fetchCartItems = () => {
-    fetch(`http://localhost:5000/api/cart/items/${userID}`)
+    fetch(`https://pizzadoe-mern.onrender.com/api/cart/items/${userID}`)
       .then(response => response.json())
       .then(data => {
         setCart(data);
@@ -24,9 +24,9 @@ const Cart = () => {
 
     try {
 
-      const { data: { key } } = await axios.get('http://localhost:5000/api/checkout/key');
+      const { data: { key } } = await axios.get('https://pizzadoe-mern.onrender.com/api/checkout/key');
 
-      const { data: { order } } = await axios.post('http://localhost:5000/api/checkout');
+      const { data: { order } } = await axios.post('https://pizzadoe-mern.onrender.com/api/checkout');
 
       const options = {
         key,
@@ -36,7 +36,7 @@ const Cart = () => {
         description: "Test Transaction",
         image: "",
         order_id: order.id,
-        callback_url: `http://localhost:5000/api/checkout/paymentVerification/${userID}`,
+        callback_url: `https://pizzadoe-mern.onrender.com/api/checkout/paymentVerification/${userID}`,
         prefill: {
           name: "Ayushi Narang",
           email: "ayushinarang21@gmail.com",
@@ -67,7 +67,7 @@ const Cart = () => {
     console.log(itemID)
     console.log("delete try")
     try {
-      await axios.delete(`http://localhost:5000/api/cart/remove/${userID}/${itemID}`);
+      await axios.delete(`https://pizzadoe-mern.onrender.com/api/cart/remove/${userID}/${itemID}`);
 
       setCart(prevCart => prevCart.filter(item => item.id !== itemID));
     } catch (error) {

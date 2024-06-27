@@ -23,7 +23,7 @@ const Header = ({data}) => {
 
   const getUserEmail =()=>{
     const userId= localStorage.getItem("userID")
-    fetch(`http://localhost:5000/api/getUserEmail/${userId}`).then(response=>response.json()).then(data=>setUserEmail(data.email)).catch(error=>console.log(error));
+    fetch(`https://pizzadoe-mern.onrender.com/api/getUserEmail/${userId}`).then(response=>response.json()).then(data=>setUserEmail(data.email)).catch(error=>console.log(error));
   }
 
   const handleShowProfile=()=>{

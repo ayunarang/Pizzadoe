@@ -31,7 +31,7 @@ const ChangePassword = () => {
 
     const changePassword = async () => {
         const userId = localStorage.getItem("userID")
-        await fetch(`http://localhost:5000/api/changepassword/${userId}`, {
+        await fetch(`https://pizzadoe-mern.onrender.com/api/changepassword/${userId}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

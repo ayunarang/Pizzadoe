@@ -10,7 +10,7 @@ const Orders = () => {
   const userID = localStorage.getItem('userID');
 
   const fetchOrders = () => {
-    fetch(`http://localhost:5000/api/orders/${userID}`)
+    fetch(`https://pizzadoe-mern.onrender.com/api/orders/${userID}`)
       .then(response => response.json())
       .then(data => {
         setOrders(data.Orders);
