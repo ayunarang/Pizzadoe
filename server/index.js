@@ -45,7 +45,7 @@ const sendEmailNotificationForotp = (message) => {
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-const allowedOrigins = ['https://ayushinarangpizzadoe-28hogzsnu-ayushi-narangs-projects.vercel.app/'];
+const allowedOrigins = ['https://ayushinarangpizzadoe-28hogzsnu-ayushi-narangs-projects.vercel.app/', 'https://ayushinarangpizzadoe-ayushi-narangs-projects.vercel.app/', 'https://ayushinarangpizzadoe-git-main-ayushi-narangs-projects.vercel.app/', 'https://ayushinarangpizzadoe-k9pexngr5-ayushi-narangs-projects.vercel.app/'];
 
 const corsOptions = {
   origin: function (origin, callback) {
