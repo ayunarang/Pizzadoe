@@ -55,6 +55,7 @@ app.use(express.json());
 mongoDb();
 
 
+
 var instance = new Razorpay({
   key_id: process.env.RAZORPAY_API_KEY,
   key_secret:  process.env.RAZORPAY_SECRET,
@@ -116,6 +117,7 @@ app.post('/api/checkout', async (req, res) => {
     res.status(200).json({ order });
 
   } catch (error) {
+    console.error(error.message);
     res.status(500).json({ error: 'Server error' });
   }
 });
@@ -516,4 +518,9 @@ app.get('/api/checkuser/:userId', async (req, res) => {
 
 app.get('/', (req, res) => {
   res.send('Hello from the server!');
+});
+
+
+app.listen(PORT, () => {
+  console.log(`running`);
 });
