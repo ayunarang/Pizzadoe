@@ -13,6 +13,8 @@ Pizzadoe is a pizza delivery application built with the MERN stack, designed to 
    Browse through a diverse menu of pizzas with options for size and quantity selection.
 
    ![Menu Image](./assets/menupizzadoe.png)
+
+   
    ![Item Image](./assets/menuoverlay.png)
    
 
@@ -20,20 +22,22 @@ Pizzadoe is a pizza delivery application built with the MERN stack, designed to 
    Users can fully customize their pizzas from base to sauces, veggies, and cheese, catering to individual tastes and preferences.
 
    ![Customize Image](./assets/custompizza.png)
+
+   
    ![Customize Image](./assets/custom.png)
 
 
-5. **Cart Management**  
+6. **Cart Management**  
    Seamless cart management allows users to add or remove items before placing an order.
 
-   ![Cart Image](./assets/cart.png)
+   <img src="./assets/cart.png" alt="Cart Image" style="width: 300px; height: auto;"/>
 
-7. **Payment Integration**  
+8. **Payment Integration**  
    Integrated payment options using RazorPay in test mode, ensuring secure transactions.
 
    ![Payment Image](./assets/payment.png)
 
-8. **Responsive Design**  
+9. **Responsive Design**  
    The application is fully responsive, ensuring a seamless experience across devices.
 
    <div style="white-space: nowrap;">
