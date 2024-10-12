@@ -10,7 +10,7 @@ const Header = ({data}) => {
   const [UserEmail, setUserEmail] = useState('');
   const navigate = useNavigate()
   const handleLogOut = () => {
-    localStorage.removeItem("authtoken")
+    // localStorage.removeItem("authtoken")
     localStorage.removeItem("userID")
     localStorage.removeItem("Role")
 
@@ -37,7 +37,7 @@ const Header = ({data}) => {
   
 
   useEffect(() => {
-    if(localStorage.getItem("authtoken")){
+    if(localStorage.getItem("userID")){
       getUserEmail();
     }
   }, []);
@@ -75,7 +75,7 @@ const Header = ({data}) => {
                 </li>
               </ul>
 
-              {(!localStorage.getItem("authtoken")) ?
+              {(!localStorage.getItem("userID")) ?
                 <div class="my-lg-0 d-flex align-items-center user-section">
                   <Link class="nav-link custom-title" to="/login">Log In</Link>
                   <Link class="text-decoration-none text-white" to="/createuser"><button class="btn btn-sm my-sm-0 custom-background custom-title" >Sign Up</button></Link></div>

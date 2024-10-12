@@ -84,42 +84,6 @@ const Explore = ({ data, pageType }) => {
     })
 
   }
-
-  // useEffect(() => {
-  //   const checkOverflow = () => {
-  //     if (containerRef.current) {
-  //       const { scrollWidth, clientWidth } = containerRef.current;
-  //       console.log(scrollWidth);
-  //       console.log(clientWidth)
-  //       setisOverflowing(scrollWidth > clientWidth);
-  //     }
-  //   };
-
-
-  //   // Check overflow on mount and on window resize
-  //   checkOverflow();
-  // }, []);
-
-
-
-
-  // const checkuser = async () => {
-  //   try {
-  //     const userId = localStorage.getItem("userID");
-  //     const response = await fetch(`http://localhost:5000/api/checkuser/${userId}`);
-  //     const data = await response.json();
-  //     if (data.error) {
-  //       if (data.error === 'User not found') {
-  //         showToastForCaseThree();
-  //       }
-  //     } else {
-  //       navigate("/custompizza");
-  //     }
-  //   } catch (error) {
-  //     console.error('Error fetching user data:', error);
-  //   }
-  // };
-
   const showToastForCaseOne = () => {
     CustomToast({ message: 'Item already in cart', type: 'error' });
   };
@@ -165,9 +129,7 @@ const Explore = ({ data, pageType }) => {
       }
       
 
-      console.log('Sending to server:', cartItem); // Log the data being sent to the server
       const userId = localStorage.getItem('userID');
-      console.log(userId);
 
       fetch(`https://pizzadoe-mern.onrender.com/api/add-to-cart/${userId}`, {
         method: 'POST',
@@ -264,9 +226,6 @@ const Explore = ({ data, pageType }) => {
                 })}
 
               </div>
-              {/* {(isOverflowing)?
-<div className="right-arrow-overlay"><img src={rightArrowIcon} className='right-arrow-icon'></img></div>
-:''} */}
 
             </div>
           </>

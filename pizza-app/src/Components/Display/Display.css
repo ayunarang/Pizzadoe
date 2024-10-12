@@ -141,14 +141,12 @@
   grid-template-columns: auto auto;
   padding: 4rem 14rem 4.8rem 14rem;
   background-color: black;
-  /* background: linear-gradient(to bottom, #1f1f1d24, #1f1f1d); */
   color: white;
 }
 
 .spinning-wheel-section {
   justify-self: center;
   align-self: center;
-
 }
 
 .spinning-section-heading {
@@ -442,7 +440,7 @@ span {
   font-size: 30px;
   color: white;
   font-weight: 600;
-  align-self: center;
+  max-width: 80%;
 }
 
 
@@ -477,7 +475,6 @@ span {
 
 
 @media only screen and (max-width: 610px) {
-
   .display-body-container{
     width:100vh;
   }
@@ -497,11 +494,9 @@ span {
   .home-pizza{
     width: 100%;
     overflow: hidden;
-    /* position: relative; */
     height: auto;
-    /* background-size: cover; Make the image cover the entire container */
-    background-position: center; /* Center the image */
-    background-repeat: no-repeat; /* Do not repeat the image */
+    background-position: center;
+    background-repeat: no-repeat;
   }
 
   .overlay {
@@ -522,7 +517,7 @@ span {
     flex-direction: column;
     width: 100vh;
     transform: translate(-50%, -50%);
-  text-align: center; /* Optional, to center text inside the div */
+  text-align: center; 
     
   }
 
@@ -573,8 +568,9 @@ span {
   }
 
   .new-customer-section {
-    padding: 2rem;
+    padding: 5rem 2rem;
     grid-template-columns: 1fr;
+    gap:4rem;
   }
   .menu-section {
     padding: 20px;
@@ -595,6 +591,45 @@ span {
     display: none;
   }
 
+.custom-pizza-text button {
+  align-self: flex-start;
+}
+
+.left-part {
+  width: 25rem;
+  font-size: 24px;
+}
+
+.spinning-wheel-text-section {
+  display: flex;
+  flex-direction: column;
+align-items: center;
+}
   
-  
+.custom-pizza-image {
+  height: 400px;
+  width: 500px;
+
+}
+}
+
+@media screen and (min-width: 611px) {
+  .custom-pizza-image {
+    height: 250px;
+    width: 350px;
+
+  }
+
+  .custom-pizza-text button {
+    align-self: flex-start;
+  }
+}
+
+@media screen and (min-width: 1280px) {
+  .custom-pizza-image {
+    height: 380px;
+    width: 480px;
+
+  }
+
 }

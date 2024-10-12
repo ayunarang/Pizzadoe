@@ -12,6 +12,7 @@ const LogIn = () => {
   const [showPassword, setshowPassword] = useState("password");
 const [HideImg, setHideImg] = useState(false);
 
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const response = await fetch('https://pizzadoe-mern.onrender.com/api/loginuser', {
@@ -30,7 +31,7 @@ const [HideImg, setHideImg] = useState(false);
     console.log('Credentials:', credentials);
     if (jsonData.success) {
       localStorage.setItem('Role', jsonData.Role);
-      localStorage.setItem('authtoken', jsonData.authtoken);
+      // localStorage.setItem('authtoken', jsonData.authtoken);
       localStorage.setItem('userID', jsonData.userId);
       showToast();
     }
