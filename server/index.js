@@ -33,7 +33,7 @@ const sendEmailNotificationForotp = (message) => {
   };
   transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
-      console.error('Error sending email:', error);
+      console.error(error);
     }
   });
 };
@@ -117,7 +117,6 @@ app.post('/api/checkout', async (req, res) => {
     res.status(200).json({ order });
 
   } catch (error) {
-    console.error(error.message);
     res.status(500).json({ error: 'Server error' });
   }
 });
@@ -166,7 +165,7 @@ app.post('/api/checkout/paymentVerification/:userId', async (req, res) => {
         }
       })
     );
-    res.redirect("https://pizzadoe-mern.onrender.com/orders");
+    res.redirect("https://pizzadoe.vercel.app/orders");
 
   } catch (error) {
     res.status(500).json({ error: 'Server error' });
@@ -228,7 +227,6 @@ app.post("/api/createuser", [
         }}
         const userId = data.user.id.toString();
   
-      // const authtoken = jwt.sign(data, process.env.jwtSecret);
       res.json({ success: true , userId: userId , Role: "user"});
     } catch (error) {
       res.json({ success: false });
@@ -237,6 +235,7 @@ app.post("/api/createuser", [
 
 app.post("/api/loginuser", async (req, res) => {
   try {
+
     let email = req.body.email;
     let password = req.body.password;
 
@@ -261,11 +260,8 @@ app.post("/api/loginuser", async (req, res) => {
     const user = await User.findById(userId);
     const role= user.role;
 
-    
-    // const authtoken = jwt.sign(data, process.env.jwtSecret);
-    res.json({ success: true, userId: userId , Role: role});
+        res.json({ success: true, userId: userId , Role: role});
   } catch (error) {
-    console.log(error);
     res.json({ success: false });
   }
 });
@@ -324,6 +320,8 @@ app.post(`/api/add-to-cart/:userId`, async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: 'Internal Server Error' });
   }
+
+
 });
 
 app.get('/api/cart/items/:userId', async (req, res) => {
@@ -361,6 +359,7 @@ app.get('/api/neworders', async (req, res) => {
 app.get('/api/custompizza', async (req, res) => {
   try {
     res.status(200).json(global.CustomPizza_data);
+
   }
   catch (error) {
     res.status(400).json({ success: false });
@@ -429,6 +428,7 @@ app.post('/api/forgotpassword', async (req, res) => {
   catch {
     res.status(400).json({ error: `server error` });
   }
+
 });
 
 let otpArray = [];
@@ -440,6 +440,7 @@ const generateRandomOTP = () => {
   } while (otpArray.includes(otp));
 
   otpArray.push(otp);
+
   return otp;
 };
 
@@ -458,6 +459,7 @@ app.post('/api/sendotp', async (req, res) => {
       const otpDoc = new OTP({ email: email, otp: generatedOTP });
       await otpDoc.save();
     }
+
     const emailcontent = EmailContent(generatedOTP);
 
     await sendEmailNotificationForotp(emailcontent);
@@ -516,11 +518,13 @@ app.get('/api/checkuser/:userId', async (req, res) => {
 
 
 
+
+
 app.get('/', (req, res) => {
   res.send('Hello from the server!');
 });
 
 
 app.listen(PORT, () => {
-  console.log(`running`);
+  console.log(`working`);
 });
