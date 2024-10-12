@@ -34,8 +34,6 @@ const sendEmailNotificationForotp = (message) => {
   transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
       console.error('Error sending email:', error);
-    } else {
-      console.log('Email sent:', info.response);
     }
   });
 };
@@ -55,7 +53,6 @@ app.use(express.json());
 
 
 mongoDb();
-
 
 
 var instance = new Razorpay({
@@ -86,7 +83,6 @@ app.post('/api/changepassword/:userId', async (req, res) => {
       const salt = await bcrypt.genSalt(10);
       let securepassword = await bcrypt.hash(new_password, salt);
       user.password = securepassword;
-      console.log("password changed");
       await user.save();
       res.status(200).json({ message: "Password changed" })
     } else {
@@ -104,7 +100,6 @@ app.get('/api/checkout/key', async (req, res) => {
     res.status(200).json({ key: process.env.RAZORPAY_API_KEY});
 
   } catch (error) {
-    console.error(error.message);
     res.status(500).json({ error: 'Server error' });
   }
 });
@@ -121,7 +116,6 @@ app.post('/api/checkout', async (req, res) => {
     res.status(200).json({ order });
 
   } catch (error) {
-    console.error(error.message);
     res.status(500).json({ error: 'Server error' });
   }
 });
@@ -132,15 +126,12 @@ app.post('/api/checkout/paymentVerification/:userId', async (req, res) => {
     const user = await User.findById(userId);
 
     const cartItems = user.cartItem;
-    console.log(cartItems);
 
     const placedorders = user.PlacedOrders;
-    // //send for saving in database
     placedorders.push(cartItems);
     user.cartItem = [];
 
 
-    //user info
     const olduser = await NewOrders.findOne({ customer_id: userId });
     if (!olduser) {
       const customer_id = userId;
@@ -173,11 +164,9 @@ app.post('/api/checkout/paymentVerification/:userId', async (req, res) => {
         }
       })
     );
-    console.log('email send');
-    res.redirect("http://localhost:3000/orders");
+    res.redirect("https://pizzadoe-mern.onrender.com/orders");
 
   } catch (error) {
-    console.error('Server error:', error);
     res.status(500).json({ error: 'Server error' });
   }
 });
@@ -211,7 +200,6 @@ app.post("/api/createuser", [
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      // Return a JSON response with details about the validation errors
       return res.status(400).json({ success: false, errors: errors.array() });
     }
     try {
@@ -241,15 +229,12 @@ app.post("/api/createuser", [
       // const authtoken = jwt.sign(data, process.env.jwtSecret);
       res.json({ success: true , userId: userId , Role: "user"});
     } catch (error) {
-      console.log(error);
       res.json({ success: false });
     }
   });
 
 app.post("/api/loginuser", async (req, res) => {
   try {
-    console.log('Request body:', req.body);
-
     let email = req.body.email;
     let password = req.body.password;
 
@@ -285,10 +270,8 @@ app.post("/api/loginuser", async (req, res) => {
 
 app.post('/api/foodData', (req, res) => {
   try {
-    console.log('Received a POST request to /api/foodData');
     res.json([global.pizzaCategory]);
   } catch (error) {
-    console.error(error.message);
     res.status(500).json({ error: 'Server error' });
   }
 });
@@ -296,10 +279,8 @@ app.post('/api/foodData', (req, res) => {
 
 app.post('/api/AdminData', (req, res) => {
   try {
-    console.log('Received a POST request to /api/AdminData');
     res.json([global.admin_items]);
   } catch (error) {
-    console.error(error.message);
     res.status(500).json({ error: 'Server error' });
   }
 });
@@ -339,11 +320,8 @@ app.post(`/api/add-to-cart/:userId`, async (req, res) => {
 
     await user.save();
   } catch (error) {
-    console.error('Error adding to cart:', error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
-
-
 });
 
 app.get('/api/cart/items/:userId', async (req, res) => {
@@ -374,19 +352,15 @@ app.get('/api/neworders', async (req, res) => {
 
   }
   catch (error) {
-    console.log('error:', error);
     res.status(400).json({ success: false });
   }
 });
 
 app.get('/api/custompizza', async (req, res) => {
   try {
-    console.log(global.CustomPizza_data)
     res.status(200).json(global.CustomPizza_data);
-
   }
   catch (error) {
-    console.log('error:', error);
     res.status(400).json({ success: false });
   }
 });
@@ -406,10 +380,8 @@ app.post('/api/update-order-status', async (req, res) => {
     }
 
     await user.save();
-    console.log('Updated status for all orders');
     return res.status(200).json({ success: true });
   } catch (error) {
-    console.error(error);
     res.status(400).json({ success: false });
   }
 });
@@ -434,7 +406,6 @@ app.delete('/api/cart/remove/:userId/:itemId', async (req, res) => {
       res.status(404).json({ error: 'Item not found' });
     }
   } catch (error) {
-    console.error('Error removing item from cart:', error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
@@ -456,7 +427,6 @@ app.post('/api/forgotpassword', async (req, res) => {
   catch {
     res.status(400).json({ error: `server error` });
   }
-
 });
 
 let otpArray = [];
@@ -468,7 +438,6 @@ const generateRandomOTP = () => {
   } while (otpArray.includes(otp));
 
   otpArray.push(otp);
-
   return otp;
 };
 
@@ -477,9 +446,7 @@ let generatedOTP;
 app.post('/api/sendotp', async (req, res) => {
   try {
     const email = req.body.useremail;
-    console.log(email)
     generatedOTP = generateRandomOTP();
-    console.log(generatedOTP)
     const existingUserOTP = await OTP.findOne({ email });
     if (existingUserOTP) {
       existingUserOTP.otp = generatedOTP;
@@ -489,8 +456,6 @@ app.post('/api/sendotp', async (req, res) => {
       const otpDoc = new OTP({ email: email, otp: generatedOTP });
       await otpDoc.save();
     }
-
-    console.log('saved');
     const emailcontent = EmailContent(generatedOTP);
 
     await sendEmailNotificationForotp(emailcontent);
@@ -506,11 +471,7 @@ app.post('/api/sendotp', async (req, res) => {
 app.post('/api/verifyotp/:userotp', async (req, res) => {
   try {
     const inputOtp = req.params.userotp;
-    //error scope
-    console.log(inputOtp);
     const email = req.body.useremail;
-    //error scope
-    console.log(email);
 
     const otpRecord = await OTP.findOne({ email });
     const otp = otpRecord.otp;
@@ -553,13 +514,6 @@ app.get('/api/checkuser/:userId', async (req, res) => {
 
 
 
-
-
 app.get('/', (req, res) => {
   res.send('Hello from the server!');
-});
-
-
-app.listen(PORT, () => {
-  console.log(`!!Server working on port: http://localhost:${PORT}`);
 });

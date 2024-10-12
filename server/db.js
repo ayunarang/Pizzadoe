@@ -4,7 +4,6 @@ const mongoose= require('mongoose')
 const mongoDb=async()=>{
     try {
         await mongoose.connect( process.env.MONGO);
-        console.log('Database working successfully');
         const fetcheddata= await mongoose.connection.db.collection("pizza_items");
         const inventorydata= await mongoose.connection.db.collection("inventory");
         const pastorders= await mongoose.connection.db.collection("NewOrders");
