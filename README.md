@@ -2,7 +2,9 @@
 
 > A seamless, feature-rich pizza delivery app built with the **MERN stack**, designed to enhance the pizza ordering experience with customization, cart management, and secure payments.  
 
-![Pizzadoe](./assets/pizzadoehome.png)  
+<p align="center">
+  <img src="./assets/pizzadoelogo.png" alt="Pizzadoe Logo" width="250px"/>
+</p>
 
 **Live Demo:** [Pizzadoe Demo](https://pizzadoe.vercel.app/) (maintenance ongoing)  
 **Tech Stack:**  
