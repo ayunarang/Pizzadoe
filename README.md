@@ -7,6 +7,9 @@
 > A seamless, feature-rich pizza delivery app built with the **MERN stack**, designed to enhance the pizza ordering experience with customization, cart management, and secure payments.  
 
 **Live Demo:** [Pizzadoe Demo](https://pizzadoe.vercel.app/) (maintenance ongoing)  
+
+---
+
 **Tech Stack:**  
 ![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react)  
 ![Node.js](https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white)  
